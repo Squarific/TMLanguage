@@ -1,0 +1,1 @@
+jens, onderaan in main.cpp in CfgToPdaAndTest vind je twee vectoren van strings nl, derivation en usedReplacements, de eerste bevat nadat de parsefunctie succesvol is uitgevoerd de leftmost derivation en de andere de gebruikte derivations voor elke stap. Dus aangezien het een leftmost is werd steeds de meeste links hoofdletter vervangen door een element van usedReplacements.

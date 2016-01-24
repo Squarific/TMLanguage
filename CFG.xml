@@ -1,0 +1,10 @@
+<CFG>
+	<Variables>QBS<StartSymbol>Q</StartSymbol>
+	</Variables>
+	<Terminals>iwemranlcd</Terminals>
+	<Productions>
+        <Rule LHS="Q" RHS= "B"/>
+        <Rule LHS="B" RHS= "SB|y"/>
+        <Rule LHS="S" RHS= "l|wlBe|ilBe|m|r|a|n|c|dBe"/>
+	</Productions>
+</CFG>
