@@ -11,6 +11,7 @@ Statement -> Accept				S -> a
 Statement -> Reject 				S -> n
 Statement -> FUNCTIONCALL			S -> c
 Statement -> Definition Block End	S -> dBe
+Statement -> WRITE"string" 			S -> z
 
 S : Statement		
 B : Block		
@@ -25,3 +26,4 @@ n : REJECT
 l : list	 code: [...]
 c : functioncall code: _..._
 d : definition code: *...*
+z : WRITE"..."
