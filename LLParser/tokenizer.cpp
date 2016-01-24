@@ -8,6 +8,7 @@
 #include <streambuf>
 #include <algorithm>
 #include <cctype>
+#include <cstddef>
 #include "tokenizer.h"
 
 using namespace std;
