@@ -91,7 +91,13 @@ bool tokenizer(vector<token> & Tokens, string inputfile){
         }else if(temp == "REJECT"){
             token tok("n");
             Tokens.push_back(tok);
-        }else if(temp.front() == '[' and temp.back() == ']' ){
+        }else if(temp.substr(0,5) == "WRITE"){
+		size_t first = x.find_first_of("\"");
+		size_t last = x.find_last_of("\"");
+		string y = x.substr(first+1,last-first-1);
+		token tok("z",y);
+	    	Tokens.push_back(tok);
+	}else if(temp.front() == '[' and temp.back() == ']' ){
             if(listSyntaxCheck(temp)){
                 token tok("l", temp);
                 Tokens.push_back(tok);
