@@ -521,7 +521,7 @@ bool parse(std::set<std::string> &terminals, std::set<std::string> &variables, s
 	return true;
 }
 
-bool CfgToPdaAndTest (std::string filename, std::string cfg, std::string& d){
+bool CfgToPdaAndTest (std::string filename, std::string cfg, std::vector<std::string>& derivation, std::vector<std::string>& usedReplacements){
 // cfg naar pda en test strings
 	using namespace std;
 
@@ -538,12 +538,8 @@ bool CfgToPdaAndTest (std::string filename, std::string cfg, std::string& d){
 	tokenizer(inputString,filename);//default argument white.txt het programma
 	stack<token> Stack;
 	Stack.push(startSymbol);
-	vector<string> derivation;
-	vector<string> usedReplacements;
 	derivation.push_back(startSymbol);
 	bool answer = parse(terminals,variables,inputString, Stack, parseTableStrings,derivation, usedReplacements);
-
-	d = derivation.back();
 
 	return answer;
 }

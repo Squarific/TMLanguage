@@ -56,4 +56,4 @@ std::vector<std::vector<std::string>> makeParseTable(std::set<std::string> &term
 
 bool parse(std::set<std::string> &terminals, std::set<std::string> &variables, std::vector<token> &inputString, std::stack<token> &Stack, std::vector<std::vector<std::string>> &parseTable, std::vector<std::string> &derivation, 	vector<string> &usedReplacements);
 
-bool CfgToPdaAndTest(std::string filename, std::string cfg, std::string& d);
+bool CfgToPdaAndTest(std::string filename, std::string cfg, std::vector<std::string>& derivation, std::vector<std::string>& usedReplacements);
