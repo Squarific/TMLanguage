@@ -82,7 +82,7 @@ std::string parseList(std::string list) {
 //--------------------------------------------------------------------------
 
 std::string parseNodeName(std::string nextDerivation, std::string type) {
-	if (type == "c" || type == "d") {
+	if (type == "c" || type == "d", type == "z") {
 		return removePrevious(nextDerivation, type);
 	}
 	else if (type == "l") {
