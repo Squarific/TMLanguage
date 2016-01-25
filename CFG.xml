@@ -5,6 +5,6 @@
 	<Productions>
         <Rule LHS="Q" RHS= "B"/>
         <Rule LHS="B" RHS= "SB|y"/>
-        <Rule LHS="S" RHS= "l|wlBe|ilBe|m|r|a|n|c|dBe|z"/>
+        <Rule LHS="S" RHS= "l|wlBe|ilBe|m|r|a|n|c|dBe|zl"/>
 	</Productions>
 </CFG>
