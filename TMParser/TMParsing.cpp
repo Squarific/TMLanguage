@@ -126,19 +126,23 @@ void TMParser::handleWhile (ParseTreeNode* node) {
 		this->transitions.push_back(temp);
 
 
-		temp = Transition(inWhileEnd, whileState, "N", symbol, "");
-		this->transitions.push_back(temp);
+		if (this->buildOnCurrent) {
+			temp = Transition(inWhileEnd, whileState, "N", symbol, "");
+			this->transitions.push_back(temp);
+		}
 	}
 
 	// With the other symbols, go to the end
 	// Both in the while and before the while
-	vector<std::string> symbolsNotInList = this->getOtherSymbols(node->name);
+	vector<std::string> symbolsNotInList = this->getOtherSymbols(list->name);
 	for (auto& symbol : symbolsNotInList) {
 		Transition temp = Transition(previous, whileEndState, "N", symbol, "");
 		this->transitions.push_back(temp);
 
-		temp = Transition(inWhileEnd, whileEndState, "N", symbol, "");
-		this->transitions.push_back(temp);
+		if (this->buildOnCurrent) {
+			temp = Transition(inWhileEnd, whileEndState, "N", symbol, "");
+			this->transitions.push_back(temp);
+		}
 	}
 
 	// Build from the endstate
@@ -183,19 +187,23 @@ void TMParser::handleIf (ParseTreeNode* node) {
 		Transition temp = Transition(previous, ifState, "N", symbol, "");
 		this->transitions.push_back(temp);
 
-		temp = Transition(inIfEnd, ifEndState, "N", symbol, "");
-		this->transitions.push_back(temp);
+		if (this->buildOnCurrent) {
+			temp = Transition(inIfEnd, ifEndState, "N", symbol, "");
+			this->transitions.push_back(temp);
+		}
 	}
 
 	// With the other symbols, go to the end
 	// Both in the if and outside of it
-	vector<std::string> symbolsNotInList = this->getOtherSymbols(node->name);
+	vector<std::string> symbolsNotInList = this->getOtherSymbols(list->name);
 	for (auto& symbol : symbolsNotInList) {
 		Transition temp = Transition(previous, ifEndState, "N", symbol, "");
 		this->transitions.push_back(temp);
 
-		temp = Transition(inIfEnd, ifEndState, "N", symbol, "");
-		this->transitions.push_back(temp);
+		if (this->buildOnCurrent) {
+			temp = Transition(inIfEnd, ifEndState, "N", symbol, "");
+			this->transitions.push_back(temp);
+		}
 	}
 
 	// Build from the endstate

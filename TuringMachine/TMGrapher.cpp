@@ -13,6 +13,11 @@ TMGrapher::TMGrapher (TuringMachine& tm) {
 std::string TMGrapher::toDot () {
 	std::string output = "digraph tm {\n";
 	output += std::string("rankdir=\"LR\";\n");
+
+	for (auto& state : this->tm.finals) {
+		output += state.name + " [shape=doublecircle];\n";
+	}
+
 	output += std::string("HIDDENSTARTSTATE [color=white, fontcolor=white];\n");
 	output += std::string("HIDDENSTARTSTATE -> ") + this->tm.currentState.name + " [label=\"start\"];\n";
 
@@ -26,7 +31,9 @@ std::string TMGrapher::toDot () {
 		else
 			direction = "N";
 
-		output += trans.from.name + " -> " + trans.to.name + " [label=\"" + trans.read + " / " + trans.write + " / " + direction + "\"];\n";
+		output += trans.from.name + " -> " + trans.to.name + " [label=\"" +
+		          trans.read + " / " + trans.write + " / " + direction +
+		          "\"];\n";
 	}
 
 	output += "}";
