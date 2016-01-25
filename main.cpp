@@ -6,17 +6,17 @@
 
 // Arguments: SOURCE DOTOUTPUT
 int main(int argc, char *argv[]) {
-	TMParser tm = TMParser(argv[1], "CFG.xml");
-
 	if (argc < 3) {
 		std::cerr << "You need to specify 2 arguments." << std::endl << std::endl;
-		std::cerr << "First argument is the machine source file example:" << std::endl;
-		std::cerr << "program.tm" << std::endl << std::endl;
+		std::cerr << "First argument is the machine source file." << std::endl;
+		std::cerr << "Example: program.tm" << std::endl << std::endl;
 		std::cerr << "Second argument is the dot output file." << std::endl;
 		std::cerr << "Example: tm.dot." << std::endl << std::endl;
 		std::cerr << "Full example: Parser program.tm tm.dot" << std::endl << endl;
 		return 1;
 	}
+
+	TMParser tm = TMParser(argv[1], "CFG.xml");
 
 	if (!tm.correctlyParsed) {
 		throw std::runtime_error("Parsing failed");

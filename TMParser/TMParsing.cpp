@@ -27,7 +27,7 @@ TuringMachine TMParser::getTM () {
 	this->blank = std::string("BLANK");
 
 	// Fill in the turing machine propertys from the tree
-	this->handleBlock(this->parseTree->root);
+	this->handleBlock(this->parseTree->root->children.at(0));
 
 	return TuringMachine(this->states,
 	                     this->inputSymbols,
@@ -41,7 +41,7 @@ TuringMachine TMParser::getTM () {
 
 void TMParser::handleBlock (ParseTreeNode* node) {
 	if (node->value != std::string("B"))
-		throw std::runtime_error("HandleBlock did not get a block.");
+		throw std::runtime_error((std::string("HandleBlock did not get a block. Got: ") + node->value).c_str());
 
 	for (auto& child : node->children) {
 		if (child->value == std::string("B"))
@@ -49,13 +49,13 @@ void TMParser::handleBlock (ParseTreeNode* node) {
 		else if (child->value == std::string("S"))
 			this->handleStatement(child);
 		else
-			throw std::runtime_error("Block had non block or statement child");
+			throw std::runtime_error((std::string("Block had a none Block or Statement child. Got: ") + child->value).c_str());
 	}
 }
 
 void TMParser::handleStatement (ParseTreeNode* node) {
 	if (node->value != std::string("S"))
-		throw std::runtime_error("handleStatement did not get a statement.");
+		throw std::runtime_error((std::string("HandleStatement did not get a statement. Got: ") + node->value).c_str());
 
 	ParseTreeNode* child = node->children.at(0);
 	if (child->value == std::string("l"))
