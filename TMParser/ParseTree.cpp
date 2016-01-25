@@ -84,10 +84,12 @@ std::string parseList(std::string list) {
 std::string parseNodeName(std::string nextDerivation, std::string type) {
 	std::cout << "PARSETREE: Parsing string: " << nextDerivation << "\nPARSETREE: of Type: " << type << "\n";
 
-	if (type == "c" || type == "d", type == "z") {
+	if (type == "c" || type == "d" || type == "z") {
+		std::cout << "PARSETREE: type is c/d/z\n";
 		return removePrevious(nextDerivation, type);
 	}
 	else if (type == "l") {
+		std::cout << "PARSETREE: type is l\n";
 		std::string list = removePrevious(nextDerivation, type);
 		return parseList(list);
 	}
@@ -100,6 +102,8 @@ std::string parseNodeName(std::string nextDerivation, std::string type) {
 
 ParseTreeNode::ParseTreeNode(std::string v, std::string n, ParseTree* t) {
 	value = v;
+
+	std::cout << "PARSETREE: Adding Node: value: " << v << ", name: " << n << "\n"; 
 
 	if (v == "l") {
 		for (int i = 0; i < n.size(); ++i) {
@@ -124,6 +128,8 @@ void ParseTreeNode::addChildren(std::string s, std::string nextDerivation, Parse
 
 		// Parse name for the new node
 		std::string nodeName = parseNodeName(nextDerivation, current);
+
+		std::cout << "PARSETREE: nodeName parsed: " << nodeName << "\n";
 
 		ParseTreeNode* newNode = new ParseTreeNode(current, nodeName, t);
 		children.push_back(newNode);
