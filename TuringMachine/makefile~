@@ -1,2 +1,0 @@
-all:
-	g++ --std=c++11 main.cpp ./TuringMachine/Parser.cpp ./TuringMachine/TuringMachine.cpp ./TuringMachine/TMGrapher.cpp ./TuringMachine/TinyXML/tinyxml.cpp ./TuringMachine/TinyXML/tinystr.cpp ./TuringMachine/TinyXML/tinyxmlerror.cpp ./TuringMachine/TinyXML/tinyxmlparser.cpp -o TuringMachine

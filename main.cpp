@@ -1,18 +1,36 @@
 #include "TMParser/TMParsing.h"
+#include "TuringMachine/TuringMachine.h"
+#include "TuringMachine/TMGrapher.h"
+#include <iostream>
+#include <exception>
 
-int main() {
-	// Dees is alles da ge moet doen
-	TMParser tm = TMParser("program.tm", "CFG.xml");
+// Arguments: SOURCE DOTOUTPUT
+int main(int argc, char *argv[]) {
+	TMParser tm = TMParser(argv[1], "CFG.xml");
 
-	// Kijk wa een coole dinge da ge ermee kunt doen
-	if (tm.correctlyParsed) {
-		std::cout << tm.derivation << std::endl;
+	if (argc < 3) {
+		std::cerr << "You need to specify 2 arguments." << std::endl << std::endl;
+		std::cerr << "First argument is the machine source file example:" << std::endl;
+		std::cerr << "program.tm" << std::endl << std::endl;
+		std::cerr << "Second argument is the dot output file." << std::endl;
+		std::cerr << "Example: tm.dot." << std::endl << std::endl;
+		std::cerr << "Full example: Parser program.tm tm.dot" << std::endl << endl;
+		return 1;
 	}
-	else {
-		std::cout << "DIKKE PECH TIS MISLUKT - laurence fix pls" << std::endl;
+
+	if (!tm.correctlyParsed) {
+		throw std::runtime_error("Parsing failed");
+		return 1;
 	}
 
-	// gg super veel werk
-	// seriously ik moet meer doen dan dees anders ben ik nisse 2
+	TuringMachine parsed = tm.getTM();
+
+	TMGrapher tmg = TMGrapher(parsed);
+
+	std::ofstream file;
+	file.open(argv[2]);
+
+	file << tmg.toDot();
+
 	return 0;
 }
