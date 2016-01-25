@@ -1,8 +1,8 @@
-*faaaf*
+*ourmove*
 	MOVELEFT
 END
 
-_fafa_
+_ourmove_
 
 WHILE ["a","b"]
 	MOVELEFT

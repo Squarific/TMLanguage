@@ -74,6 +74,7 @@ void TMParser::handleStatement (ParseTreeNode* node) {
 		this->handleFunctionCall(node);
 	else if (child->value == std::string("d"))
 		this->handleFunctionDefinition(node);
+	else if (child->value == std::string("y"));
 	else
 		throw std::runtime_error("Statement had unknown child: " + child->value);
 }
