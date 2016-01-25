@@ -89,16 +89,6 @@ TuringMachine::TuringMachine(std::vector<State> states,
 	this->currentTape = tape;
 }
 
-TuringMachine::TuringMachine(std::vector<State> states,
-                             std::vector<Transition> transitions,
-                             State start,
-                             std::vector<State> finals) {
-	this->states = states;
-	this->finals = finals;
-	this->transitions = transitions;
-	this->currentState = start;
-}
-
 bool TuringMachine::addModule (Transition trans, TuringMachine module, State& returnState) {
 	std::string randomPrefix = std::to_string('a' + rand() % 26) +
 	                           std::to_string('a' + rand() % 26) +
