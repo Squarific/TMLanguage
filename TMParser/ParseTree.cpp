@@ -100,6 +100,28 @@ std::string parseNodeName(std::string nextDerivation, std::string type) {
 
 //--------------------------------------------------------------------------
 
+ParseTreeNode::ParseTreeNode(std::string v, std::string n, ParseTree* t, int p) {
+	value = v;
+
+	std::cout << "PARSETREE: Adding Node: value: " << v << ", name: " << n << "\n"; 
+
+	leafPosition = p;
+
+	if (v == "l") {
+		for (int i = 0; i < n.size(); ++i) {
+			name.push_back(charToStr(n[i]));
+		}
+	}
+	else {
+		name.push_back(n);
+	}
+
+	isLeaf = true;
+	tree = t;
+}
+
+//--------------------------------------------------------------------------
+
 ParseTreeNode::ParseTreeNode(std::string v, std::string n, ParseTree* t) {
 	value = v;
 
@@ -123,6 +145,13 @@ ParseTreeNode::ParseTreeNode(std::string v, std::string n, ParseTree* t) {
 void ParseTreeNode::addChildren(std::string s, std::string nextDerivation, ParseTree* t) {
 	std::string current;
 
+	int p = leafPosition;
+
+	// Update leafPositions for nodes behind this one
+	for (int i = p + 1; i < tree->leafNodes.size(); ++i) {
+		tree->leafNodes[i]->leafPosition += s.length() - 1;
+	}
+
 	for (int i = 0; i < s.length(); ++i) {
 		current = s[i];
 
@@ -131,12 +160,15 @@ void ParseTreeNode::addChildren(std::string s, std::string nextDerivation, Parse
 
 		std::cout << "PARSETREE: nodeName parsed: " << nodeName << "\n";
 
-		ParseTreeNode* newNode = new ParseTreeNode(current, nodeName, t);
+		ParseTreeNode* newNode = new ParseTreeNode(current, nodeName, t, p);
 		children.push_back(newNode);
-		tree->leafNodes.push_back(newNode);
+		tree->leafNodes.insert(tree->leafNodes.begin() + p, newNode);
+
+		p++;
 	}
 
 	isLeaf = false;
+	leafPosition = -1;
 
 	// Remove leafNodes that are no longer leaves
 	tree->checkLeafNodes(s);
@@ -146,7 +178,7 @@ void ParseTreeNode::addChildren(std::string s, std::string nextDerivation, Parse
 
 ParseTree::ParseTree(std::vector<std::string>& d, std::vector<std::string>& r) {
 	// Create root
-	root = new ParseTreeNode(d.front(), d.front(), this);
+	root = new ParseTreeNode(d.front(), d.front(), this, 0);
 	leafNodes.push_back(root);
 
 	ParseTreeNode* currentNode = root;
@@ -159,25 +191,32 @@ ParseTree::ParseTree(std::vector<std::string>& d, std::vector<std::string>& r) {
 
 		currentNode = this->findLeftMostCapital();
 
+		std::cout << "PARSETREE: Current Derivation: " << d[i + 1] << "\n";
+
 		std::cout << "PARSETREE: Current Node: " << currentNode->value << "\n";
 
 		std::cout << "PARSETREE: Adding children: " << r[i] << "\n";
 
 		// Add the new children for the step of the derivation
 		currentNode->addChildren(r[i], d[i + 1], this);
-		currentNode = currentNode->children[0];
+
+		std::cout << "-------------------------------------------\n";
 	}
 }
 
 ParseTreeNode* ParseTree::findLeftMostCapital() {
-	ParseTreeNode* currentNode = root;
+	ParseTreeNode* currentNode;
 
-	for (int i = 0; i < leafNodes.size(); i++) {
+	for (int i = 0; i < leafNodes.size(); ++i) {
+		std::cout << "leafnode: " << leafNodes[i]->value << " - " << leafNodes[i]->leafPosition << "\n";
+	}
+
+	for (int i = 0; i < leafNodes.size(); ++i) {
+		currentNode = leafNodes[i];
+
 		if (currentNode->isLeaf && isCapital(currentNode->value)) {
 			break;
 		}
-
-		currentNode = leafNodes[i];
 	}
 
 	return currentNode;

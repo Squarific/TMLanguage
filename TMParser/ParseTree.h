@@ -16,8 +16,10 @@ class ParseTreeNode {
   	std::vector<ParseTreeNode*> children;
   	bool isLeaf;
   	ParseTree* tree;
+    int leafPosition;
 
-  	ParseTreeNode(std::string v, std::string n, ParseTree* t);
+    ParseTreeNode(std::string v, std::string n, ParseTree* t);
+  	ParseTreeNode(std::string v, std::string n, ParseTree* t, int p);
   	void addChildren(std::string s, std::string nextDerivation, ParseTree* t);
 };
 
