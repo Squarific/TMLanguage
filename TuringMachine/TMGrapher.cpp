@@ -17,8 +17,16 @@ std::string TMGrapher::toDot () {
 	output += std::string("HIDDENSTARTSTATE -> ") + this->tm.currentState.name + " [label=\"start\"];\n";
 
 	for (auto& trans : this->tm.transitions) {
-		std::string direction = trans.headMove == "R" ? "->" : "<-";
-		output += trans.from.name + " -> " + trans.to.name + " [label=\"" + trans.read + " / " + trans.write + " " + direction + "\"];\n";
+		std::string direction;
+
+		if (trans.headMove == "R")
+			direction = "->";
+		else if (trans.headMove == "L")
+			direction = "<-";
+		else
+			direction = "N";
+
+		output += trans.from.name + " -> " + trans.to.name + " [label=\"" + trans.read + " / " + trans.write + " / " + direction + "\"];\n";
 	}
 
 	output += "}";

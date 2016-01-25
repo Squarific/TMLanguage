@@ -1,0 +1,33 @@
+digraph tm {
+rankdir="LR";
+HIDDENSTARTSTATE [color=white, fontcolor=white];
+HIDDENSTARTSTATE -> start [label="start"];
+start -> function_ourmove_1 [label="a /  / N"];
+start -> function_ourmove_1 [label="b /  / N"];
+start -> function_ourmove_1 [label="c /  / N"];
+start -> move1 [label="a /  / <-"];
+start -> move1 [label="b /  / <-"];
+start -> move1 [label="c /  / <-"];
+while1 -> move2 [label="a /  / <-"];
+while1 -> move2 [label="b /  / <-"];
+while1 -> move2 [label="c /  / <-"];
+move2 -> move3 [label="a /  / ->"];
+move2 -> move3 [label="b /  / ->"];
+move2 -> move3 [label="c /  / ->"];
+move3 -> accept [label="a /  / N"];
+move3 -> accept [label="b /  / N"];
+move3 -> accept [label="c /  / N"];
+function_ourmove_1 -> while1 [label="a /  / N"];
+move3 -> while1 [label="a /  / N"];
+function_ourmove_1 -> while1 [label="b /  / N"];
+move3 -> while1 [label="b /  / N"];
+function_ourmove_1 -> whileEnd1 [label="a /  / N"];
+move3 -> whileEnd1 [label="a /  / N"];
+function_ourmove_1 -> whileEnd1 [label="b /  / N"];
+move3 -> whileEnd1 [label="b /  / N"];
+function_ourmove_1 -> whileEnd1 [label="c /  / N"];
+move3 -> whileEnd1 [label="c /  / N"];
+whileEnd1 -> accept [label="a /  / N"];
+whileEnd1 -> accept [label="b /  / N"];
+whileEnd1 -> accept [label="c /  / N"];
+}

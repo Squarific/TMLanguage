@@ -24,6 +24,7 @@ TuringMachine TMParser::getTM () {
 	this->transitions = {};
 
 	this->current = State("start");
+	this->buildOnCurrent = true;
 	this->blank = std::string("BLANK");
 
 	// Fill in the turing machine propertys from the tree
@@ -48,6 +49,7 @@ void TMParser::handleBlock (ParseTreeNode* node) {
 			this->handleBlock(child);
 		else if (child->value == std::string("S"))
 			this->handleStatement(child);
+		else if (child->value == std::string("y"));
 		else
 			throw std::runtime_error((std::string("Block had a none Block or Statement child. Got: ") + child->value).c_str());
 	}
@@ -87,6 +89,7 @@ void TMParser::handleList (ParseTreeNode* node) {
 }
 
 void TMParser::handleWhile (ParseTreeNode* node) {
+	if (!this->buildOnCurrent) return;
 	State previous = this->current;
 	this->whileCount++;
 
@@ -105,6 +108,7 @@ void TMParser::handleWhile (ParseTreeNode* node) {
 
 	// Handle the body
 	this->current = whileState;
+	this->buildOnCurrent = true;
 	this->handleBlock(node->children.at(2));
 
 	// Get the state we are in if we went in the whileloop
@@ -113,7 +117,11 @@ void TMParser::handleWhile (ParseTreeNode* node) {
 	// Create transitions for the nodes in the list, to the whilestate
 	// And from the whilestateend back to the whilestate
 	ParseTreeNode* list = node->children.at(1);
-	for (auto& symbol : node->name) {
+
+	if (list->value != std::string("l"))
+		throw runtime_error("While had non list child at index 1. Got: " + list->value);
+
+	for (auto& symbol : list->name) {
 		Transition temp = Transition(previous, whileState, "N", symbol, "");
 		this->transitions.push_back(temp);
 
@@ -135,9 +143,11 @@ void TMParser::handleWhile (ParseTreeNode* node) {
 
 	// Build from the endstate
 	this->current = whileEndState;
+	this->buildOnCurrent = true;
 }
 
 void TMParser::handleIf (ParseTreeNode* node) {
+	if (!this->buildOnCurrent) return;
 	State previous = this->current;
 	this->ifCount++;
 
@@ -156,6 +166,7 @@ void TMParser::handleIf (ParseTreeNode* node) {
 
 	// Handle the body
 	this->current = ifState;
+	this->buildOnCurrent = true;
 	this->handleBlock(node->children.at(2));
 
 	// Get the state we are in if we went in the ifblock
@@ -164,10 +175,13 @@ void TMParser::handleIf (ParseTreeNode* node) {
 	// Create transitions for the nodes in the list, to the ifstate
 	// And from the end state in the if to the end state out of the if
 	ParseTreeNode* list = node->children.at(1);
-	for (auto& symbol : node->name) {
+
+	if (list->value != std::string("l"))
+		throw runtime_error("While had non list child at index 1. Got: " + list->value);
+
+	for (auto& symbol : list->name) {
 		Transition temp = Transition(previous, ifState, "N", symbol, "");
 		this->transitions.push_back(temp);
-
 
 		temp = Transition(inIfEnd, ifEndState, "N", symbol, "");
 		this->transitions.push_back(temp);
@@ -186,9 +200,11 @@ void TMParser::handleIf (ParseTreeNode* node) {
 
 	// Build from the endstate
 	this->current = ifEndState;
+	this->buildOnCurrent = true;
 }
 
 void TMParser::handleMove (ParseTreeNode* node) {
+	if (!this->buildOnCurrent) return;
 	this->moveCount++;
 
 	State next = State(std::string("move") + std::to_string(this->moveCount));
@@ -203,12 +219,11 @@ void TMParser::handleMove (ParseTreeNode* node) {
 	}
 
 	this->current = next;
+	this->buildOnCurrent = true;
 }
 
 void TMParser::handleEndstate (ParseTreeNode* node) {
-	this->endCount++;
-
-	State next = State(std::string("end") + std::to_string(this->endCount));
+	if (!this->buildOnCurrent) return;
 
 	State end = State("accept");
 	if (node->value == "n") end = State("reject");
@@ -218,10 +233,11 @@ void TMParser::handleEndstate (ParseTreeNode* node) {
 		this->transitions.push_back(temp);
 	}
 
-	this->current = next;
+	this->buildOnCurrent = false;
 }
 
 void TMParser::handleWrite (ParseTreeNode* node) {
+	if (!this->buildOnCurrent) return;
 	this->writeCount++;
 
 	State next = State(std::string("write") + std::to_string(this->writeCount));
@@ -232,11 +248,17 @@ void TMParser::handleWrite (ParseTreeNode* node) {
 	}
 
 	this->current = next;
+	this->buildOnCurrent = true;
 }
 
 void TMParser::handleFunctionCall (ParseTreeNode* node) {
+	if (!this->buildOnCurrent) return;
 	ParseTreeNode* functionNode = this->getFunctionNode(
 		node->children.at(0)->name.at(0));
+
+	if (functionNode == NULL)
+		// Called function that was not (yet) defined
+		throw std::runtime_error("You have called a function that was not (yet) defined: " + node->children.at(0)->name.at(0));
 
 	this->funcCount++;
 
@@ -244,13 +266,24 @@ void TMParser::handleFunctionCall (ParseTreeNode* node) {
 	                   node->children.at(0)->name.at(0) + std::string("_") +
 	                   std::to_string(this->funcCount));
 
+	for (auto& symbol : this->tapeSymbols) {
+		Transition temp = Transition(this->current, next, "N", symbol, "");
+		this->transitions.push_back(temp);
+	}
+
+	this->states.push_back(next);
+
 	this->handleBlock(functionNode->children.at(1));
 
 	this->current = next;
+	this->buildOnCurrent = true;
 	
 }
 
 void TMParser::handleFunctionDefinition (ParseTreeNode* node) {
+	if (this->getFunctionNode(node->children.at(0)->name.at(0)) != NULL)
+		throw std::runtime_error("Redefinition of " + node->children.at(0)->name.at(0));
+
 	this->functions.push_back(node);
 }
 
@@ -259,8 +292,7 @@ ParseTreeNode* TMParser::getFunctionNode (std::string name) {
 		if (node->children.at(0)->name.at(0) == name) return node;
 	}
 
-	// Called function that was not (yet) defined
-	throw std::runtime_error("You have called a function that was not (yet) defined: " + name);
+	return NULL;
 }
 
 vector< std::string > TMParser::getOtherSymbols (vector< std::string > list) {

@@ -1,20 +1,30 @@
-*ourmove*
+["a","b","c","d","C"]
+
+*WRITE_C_TO_OUR_LEFT_AND_RETURN*
 	MOVELEFT
+	WRITE "C"
+	MOVERIGHT
 END
 
+MOVELEFT
+MOVELEFT
+_ourmove_
+MOVERIGHT
 _ourmove_
 
 WHILE ["a","b"]
 	MOVELEFT
 	MOVERIGHT
+	WRITE "C"
 	ACCEPT
 END
 
-ACCEPT
-REJECT
-
 IF ["a"]
 	MOVERIGHT
+END
+
+IF ["b"]
+	ACCEPT
 END
 
 REJECT

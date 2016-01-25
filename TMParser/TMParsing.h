@@ -4,6 +4,7 @@
 #include "../LLParser/LLParser.h"
 #include "../TuringMachine/TuringMachine.h"
 #include "ParseTree.h"
+#include <memory>
 
 // TMPARSING.H
 //--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ class TMParser {
 	vector<Transition> transitions;
 
 	State current;
+	bool buildOnCurrent = true;
 	std::string blank;
 
 	std::vector<ParseTreeNode*> functions;
