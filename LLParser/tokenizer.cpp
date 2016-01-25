@@ -93,9 +93,9 @@ bool tokenizer(vector<token> & Tokens, string inputfile){
             token tok("n");
             Tokens.push_back(tok);
         }else if(temp.substr(0,5) == "WRITE"){
-		size_t first = x.find_first_of("\"");
-		size_t last = x.find_last_of("\"");
-		string y = x.substr(first+1,last-first-1);
+		size_t first = temp.find_first_of("\"");
+		size_t last = temp.find_last_of("\"");
+		string y = temp.substr(first,last-first+1);
 		token tok("z",y);
 	    	Tokens.push_back(tok);
 	}else if(temp.front() == '[' and temp.back() == ']' ){
