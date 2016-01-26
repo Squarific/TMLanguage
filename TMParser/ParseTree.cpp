@@ -50,8 +50,8 @@ std::string removePrevious(std::string nextDerivation, std::string type) {
 	std::string newStr = nextDerivation;
 
 	// Delete all things that come before the type
-	while (newStr.find(type) != std::string::npos) {
-		newStr.erase(newStr.begin(), newStr.begin() + newStr.find(type) + 3);
+	while (newStr.find(type + "(") != std::string::npos) {
+		newStr.erase(newStr.begin(), newStr.begin() + newStr.find(type + "(") + 3);
 	}
 
 	// Delete everything after the type
@@ -84,7 +84,7 @@ std::string parseList(std::string list) {
 std::string parseNodeName(std::string nextDerivation, std::string type) {
 	std::cout << "PARSETREE: Parsing string: " << nextDerivation << "\nPARSETREE: of Type: " << type << "\n";
 
-	if (type == "c" || type == "d" || type == "z") {
+	if (type == "c" || type == "d") {
 		std::cout << "PARSETREE: type is c/d/z\n";
 		return removePrevious(nextDerivation, type);
 	}
@@ -185,7 +185,7 @@ ParseTree::ParseTree(std::vector<std::string>& d, std::vector<std::string>& r) {
 
 	// Add children for every derivation
 	for (int i = 0; i < d.size(); ++i) {
-		if (! containsCapitals(d[i])) {
+		if (! capitalLeaves()) {
 			break;
 		}
 
@@ -202,6 +202,8 @@ ParseTree::ParseTree(std::vector<std::string>& d, std::vector<std::string>& r) {
 
 		std::cout << "-------------------------------------------\n";
 	}
+
+	std::cout << "PARSETREE: Parse Tree Complete!" << "\n";
 }
 
 ParseTreeNode* ParseTree::findLeftMostCapital() {
@@ -226,4 +228,13 @@ void ParseTree::checkLeafNodes(std::string s) {
 			i--;
 		}
 	}
+}
+
+bool ParseTree::capitalLeaves() {
+	for (int i = 0; i < leafNodes.size(); ++i) {
+		if (isCapital(leafNodes[i]->value))
+			return true;
+	}
+
+	return false;
 }

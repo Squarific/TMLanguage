@@ -33,6 +33,7 @@ class ParseTree {
   	ParseTree(std::vector<std::string>& d, std::vector<std::string>& r);
   	ParseTreeNode* findLeftMostCapital();
   	void checkLeafNodes(std::string s);
+    bool capitalLeaves();
 };
 
 #endif
