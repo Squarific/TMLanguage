@@ -62,12 +62,34 @@ vector<string> wordsToVector(string filename){
 	return woorden;
 }
 
-bool listSyntaxCheck(string x){return true;}
+bool listSyntaxCheck(string x){
+	x.erase(0);
+	x.erase(x.end());
+	
+	while (string.length() != 0){
+		if (x.begin == ',') {
+			x.erase(0);
+		}
+		else if (x.begin == ' ') {
+			cout << "list syntax error: Cannot use spaces in the list";
+			return false;
+		}
+		else if (x.begin == '"') {
+			x.erase(0);
+			if (x.find('"') == -1) {
+				return false;
+			}
+			x.erase(0, x.find('"'));
+		}
+	}
+	return true;
+}
 bool nameSyntaxCheck(string x){return true;}
 
 bool tokenizer(vector<token> & Tokens, string inputfile){
-
+ 
     vector<string> codeVector = wordsToVector(inputfile);
+
 	if(!codeVector.empty()){
 	    string temp = codeVector.front();
 	        
@@ -86,7 +108,6 @@ bool tokenizer(vector<token> & Tokens, string inputfile){
         
     while(!codeVector.empty()){
         string temp = codeVector.front();
-        
         if(temp == "IF"){
             token tok("i");
             Tokens.push_back(tok);
@@ -111,15 +132,15 @@ bool tokenizer(vector<token> & Tokens, string inputfile){
         }else if(temp == "WRITE"){
 	    token tok("z");
 	    Tokens.push_back(tok);
-	}
+		}
         /*else if(temp.substr(0,5) == "WRITE"){
 		size_t first = temp.find_first_of("\"");
 		size_t last = temp.find_last_of("\"");
 		string y = temp.substr(first,last-first+1);
 		token tok("z",y);
 	    	Tokens.push_back(tok);
-	}*/
-        }else if(temp.front() == '_' and temp.back() == '_' ){
+		}*/
+        else if(temp.front() == '_' and temp.back() == '_' ){
             if(nameSyntaxCheck(temp)){
                 token tok("c", temp);
                 Tokens.push_back(tok);
@@ -129,8 +150,8 @@ bool tokenizer(vector<token> & Tokens, string inputfile){
                 token tok("d", temp);
                 Tokens.push_back(tok);
             }else{cout<<"functionname syntax error: "<< temp <<endl;}
-        else if(temp.front() == '[' and temp.back() == ']' ){
-            cout<<"syntax error: There can only be 1 list." <<endl;
+        }else if(temp.front() == '[' and temp.back() == ']' ){
+            cout<<"syntax error: "  << temp << " (There can only be 1 list.)" <<endl;
         }else{
             cout<<"tokenizer did not recognize: " << temp<<endl;
             return false;
