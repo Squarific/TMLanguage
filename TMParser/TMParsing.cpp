@@ -2,15 +2,18 @@
 #include "../TuringMachine/TuringMachine.h"
 #include "ParseTree.h"
 #include <exception>
+#include <iostream>
 
 TMParser::TMParser(std::string p, std::string c) {
 	correctlyParsed = CfgToPdaAndTest(p, c, derivations, replacements);
 
 	if (correctlyParsed) {
 		derivation = derivations.back();
+		parseTree = new ParseTree(derivations, replacements);
 	}
-
-	parseTree = new ParseTree(derivations, replacements);
+	else {
+		std::cout << "TMPARSER: Could not create parse tree because derivation was not correct.\n";
+	}
 }
 
 // Get the turing machine from the parse tree
