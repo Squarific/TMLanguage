@@ -1,0 +1,29 @@
+Block -> Block Statement  			B -> BS
+Block -> Statement				B -> S
+
+# kan alleen als eerste statement, semantische analyse
+Statement -> List 				S -> l
+Statement -> While List Block End		S -> wlBe
+Statement -> If List Block End			S -> ilBe
+Statement -> MoveLeft				S -> m
+Statement -> MoveRight				S -> r
+Statement -> Accept				S -> a
+Statement -> Reject 				S -> n
+Statement -> FUNCTIONCALL			S -> c
+Statement -> Definition Block End	S -> dBe
+Statement -> WRITE"string" 			S -> z
+
+S : Statement		
+B : Block		
+	
+i : IF
+w : WHILE		
+e : END			
+m : MOVELEFT
+r : MOVERIGHT
+a : ACCEPT
+n : REJECT
+l : list	 code: [...]
+c : functioncall code: _..._
+d : definition code: *...*
+z : WRITE"..."

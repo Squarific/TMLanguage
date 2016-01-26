@@ -1,8 +1,12 @@
+*shake*
+	MOVELEFT
+	MOVERIGHT
+END
+
 ["a","b","c","d"]
 
 WHILE ["a","b"]
-	MOVELEFT
-	MOVERIGHT
+	_shake_
 	ACCEPT
 END
 

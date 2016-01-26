@@ -208,10 +208,6 @@ ParseTreeNode* ParseTree::findLeftMostCapital() {
 	ParseTreeNode* currentNode;
 
 	for (int i = 0; i < leafNodes.size(); ++i) {
-		std::cout << "leafnode: " << leafNodes[i]->value << " - " << leafNodes[i]->leafPosition << "\n";
-	}
-
-	for (int i = 0; i < leafNodes.size(); ++i) {
 		currentNode = leafNodes[i];
 
 		if (currentNode->isLeaf && isCapital(currentNode->value)) {
