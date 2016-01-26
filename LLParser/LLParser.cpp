@@ -470,11 +470,11 @@ bool parse(std::set<std::string> &terminals, std::set<std::string> &variables, s
 		}
 
 		while(!capsCheck(Stack.top().abstract.at(0)) and !Stack.empty()){
-			if(inputString.empty()){cout<<"inputstring empty prematurely"<<endl;}
+			if(inputString.empty()){cout<<"inputstring empty prematurely"<<endl;return false;}
 			if(Stack.top().abstract == inputString.front().abstract){
 				Stack.pop();
 				inputString.erase(inputString.begin());
-			}else{cout<<"stack-input ongelijkheid van terminals"<<endl;}
+			}else{cout<<"stack-input ongelijkheid van terminals"<<endl;return false;}
 		}
 
 
@@ -517,6 +517,19 @@ bool parse(std::set<std::string> &terminals, std::set<std::string> &variables, s
 		}else{
 			return false;
 		}
+	}
+	int bracecount = 0;
+	int stringpos = 1;
+	for(auto i:derivation.back()){
+		if(i=='('){bracecount++;}
+		if(i==')'){bracecount--; continue;}
+		if(bracecount!=0){continue;}
+		if(capsCheck(i)){
+			cout<<"undevelopped variable at position: "<<stringpos<<" in: "<<endl;
+			cout<<derivation.back()<<endl;
+			return false;
+		}
+		stringpos++;
 	}
 	return true;
 }
