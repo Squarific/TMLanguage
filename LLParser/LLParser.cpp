@@ -535,7 +535,9 @@ bool CfgToPdaAndTest (std::string filename, std::string cfg, std::vector<std::st
 
 	vector<token> inputString;
 
-	tokenizer(inputString,filename);//default argument white.txt het programma
+	bool tokenizeSucces = tokenizer(inputString,filename);//default argument white.txt het programma
+	if(!tokenizeSucces){std::cout<<"tokenizer error"<<endl;return false;}
+	
 	stack<token> Stack;
 	Stack.push(startSymbol);
 	derivation.push_back(startSymbol);
