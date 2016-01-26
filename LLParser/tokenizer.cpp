@@ -63,25 +63,25 @@ vector<string> wordsToVector(string filename){
 }
 
 bool listSyntaxCheck(string x){
-	x.erase(0);
+	/*x.erase(0);
 	x.erase(x.end());
 	
 	while (string.length() != 0){
-		if (x.begin() == ',') {
+		if (x.begin == ',') {
 			x.erase(0);
 		}
-		else if (x.begin() == ' ') {
+		else if (x.begin == ' ') {
 			cout << "list syntax error: Cannot use spaces in the list";
 			return false;
 		}
-		else if (x.begin() == '"') {
+		else if (x.begin == '"') {
 			x.erase(0);
 			if (x.find('"') == -1) {
 				return false;
 			}
 			x.erase(0, x.find('"'));
 		}
-	}
+	}*/
 	return true;
 }
 bool nameSyntaxCheck(string x){return true;}
@@ -99,9 +99,10 @@ bool tokenizer(vector<token> & Tokens, string inputfile){
 	            Tokens.push_back(tok);
 	        }
 	        else{cout<<"list syntax error: "<< temp <<endl;}
+	        codeVector.erase (codeVector.begin());
 	    }
-	    else if {
-	    	cout<<"syntax error: first statement should be a list"
+	    else {
+	    	cout<<"syntax error: first statement should be a list";
 	    	return false;
 	    }
 	}
@@ -151,7 +152,10 @@ bool tokenizer(vector<token> & Tokens, string inputfile){
                 Tokens.push_back(tok);
             }else{cout<<"functionname syntax error: "<< temp <<endl;}
         }else if(temp.front() == '[' and temp.back() == ']' ){
-            cout<<"syntax error: "  << temp << " (There can only be 1 list.)" <<endl;
+            if(listSyntaxCheck(temp)){
+                token tok("l", temp);
+                Tokens.push_back(tok);
+            }else{cout<<"list syntax error: "<< temp <<endl;}
         }else{
             cout<<"tokenizer did not recognize: " << temp<<endl;
             return false;
