@@ -67,14 +67,14 @@ bool listSyntaxCheck(string x){
 	x.erase(x.end());
 	
 	while (string.length() != 0){
-		if (x.begin == ',') {
+		if (x.begin() == ',') {
 			x.erase(0);
 		}
-		else if (x.begin == ' ') {
+		else if (x.begin() == ' ') {
 			cout << "list syntax error: Cannot use spaces in the list";
 			return false;
 		}
-		else if (x.begin == '"') {
+		else if (x.begin() == '"') {
 			x.erase(0);
 			if (x.find('"') == -1) {
 				return false;

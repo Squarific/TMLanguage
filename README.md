@@ -1,6 +1,8 @@
 TMLanguage
 ==========
 
+You call the compiler by doing: ./Parsing SOURCEFILE OUTPUTDOT
+
 A program written in TML is converted to a turing machine. It can manipulate the head and read/write from it.    
 By default a program rejects everything.
 
