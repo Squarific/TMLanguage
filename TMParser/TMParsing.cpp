@@ -270,18 +270,29 @@ void TMParser::handleFunctionCall (ParseTreeNode* node) {
 
 	this->funcCount++;
 
-	State next = State(std::string("function_") +
+	State start = State(std::string("function_") +
 	                   node->children.at(0)->name.at(0) + std::string("_") +
 	                   std::to_string(this->funcCount));
+
+	State next = State(std::string("function_") +
+	                   node->children.at(0)->name.at(0) + std::string("_") +
+	                   std::to_string(this->funcCount) + std::string("_end"));
+
+	for (auto& symbol : this->tapeSymbols) {
+		Transition temp = Transition(this->current, start, "N", symbol, "");
+		this->transitions.push_back(temp);
+	}
+
+	this->states.push_back(start);
+	this->states.push_back(next);
+	this->current = start;
+
+	this->handleBlock(functionNode->children.at(1));
 
 	for (auto& symbol : this->tapeSymbols) {
 		Transition temp = Transition(this->current, next, "N", symbol, "");
 		this->transitions.push_back(temp);
 	}
-
-	this->states.push_back(next);
-
-	this->handleBlock(functionNode->children.at(1));
 
 	this->current = next;
 	this->buildOnCurrent = true;

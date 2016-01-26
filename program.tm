@@ -1,12 +1,24 @@
-*shake*
+["a","b","c","d"]
+
+*WRITE_C_TO_OUR_LEFT_AND_RETURN*
 	MOVELEFT
+	WRITE ["c"]
+	IF ["c"]
+		MOVELEFT
+	END
 	MOVERIGHT
 END
 
-["a","b","c","d"]
+MOVELEFT
+MOVELEFT
+_WRITE_C_TO_OUR_LEFT_AND_RETURN_
+MOVERIGHT
+_WRITE_C_TO_OUR_LEFT_AND_RETURN_
 
 WHILE ["a","b"]
-	_shake_
+	MOVELEFT
+	MOVERIGHT
+	WRITE ["C"]
 	ACCEPT
 END
 
@@ -17,5 +29,3 @@ END
 IF ["b"]
 	ACCEPT
 END
-
-REJECT

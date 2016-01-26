@@ -63,11 +63,35 @@ Accept and reject can be used to put the program into either of the states.
 
 
 ```
-["a", "b"]
+    ["a", "b"]
 
-IF ["a"]
-	ACCEPT
-END
+    IF ["a"]
+        ACCEPT
+    END
 ```
 
 The above program accepts strings that start with 'a' and rejects strings that start with 'b'.
+
+
+Functions
+---------
+
+You can define a function by using *NAME*    
+Followed by a block and then the keyword END
+
+Example:
+
+```
+    *RemoveUntillNotC*
+        WHILE ["c"]
+        	WRITE ["BLANK"]
+        	MOVERIGHT
+        END
+    END
+```
+
+You can call a function by using _NAME_    
+
+Example: _RemoveUntillNotC_
+
+Functions should not be called within functions.
